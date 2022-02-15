@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 
 public class Breakout extends GraphicsProgram {
 
+    //change
+
+
     /*
     1) we don't have lives
 
