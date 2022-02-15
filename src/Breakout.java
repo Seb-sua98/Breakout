@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 public class Breakout extends GraphicsProgram {
 
-    //change
+
 
 
     /*
@@ -42,6 +42,8 @@ public class Breakout extends GraphicsProgram {
     private Color[] rowColors = {Color.black, Color.BLACK, Color.magenta, Color.MAGENTA, Color.blue, Color.BLUE, Color.cyan, Color.CYAN, Color.white, Color.WHITE};
     private int lives;
     private GLabel livesLabel;
+    private int score;
+    private GLabel scoreLabel;
     @Override
     public void init(){
 
@@ -63,6 +65,9 @@ public class Breakout extends GraphicsProgram {
 
         livesLabel = new GLabel("lives:" +  lives);
         add(livesLabel, getWidth()/4 , getHeight()/9);
+
+        scoreLabel = new GLabel("Score:" + score);
+        add(scoreLabel, getWidth()/2 , getHeight()/9);
 
 
     }
@@ -152,8 +157,12 @@ public class Breakout extends GraphicsProgram {
                 ball.bounce();
                 //destroy brick
                 this.remove(obj);
+                score += 1;
+                scoreLabel.setLabel("Score:" + score);
 
             }
+
+
 
         }
 
@@ -161,6 +170,30 @@ public class Breakout extends GraphicsProgram {
 
         //if by the nd of the method obj is still null, we hit nothing
 
+    }
+
+    private void placeAll(){
+        numBricksInRow = (int) (getWidth()/ (Brick.WIDTH + 5.0));
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < numBricksInRow; col++) {
+                Brick brick = new Brick(10 + col * (Brick.WIDTH + 5), 4 * Brick.HEIGHT + row * (Brick.HEIGHT + 5), rowColors[row], row);
+                add(brick);
+            }
+        }
+
+        ball = new Ball(getWidth()/2, 350, 10, this.getGCanvas());
+        paddle = new Paddle(230, 430, 50, 10);
+        add(ball);
+        add(paddle);
+
+        lives = 3;
+
+        livesLabel = new GLabel("lives:" +  lives);
+        add(livesLabel, getWidth()/4 , getHeight()/9);
+
+        scoreLabel = new GLabel("Score:" + score);
+        add(scoreLabel, getWidth()/2 , getHeight()/9);
     }
 
     private void handleLoss(){
@@ -179,7 +212,11 @@ public class Breakout extends GraphicsProgram {
 
         if(lives == 0){
 
-            Dialog.showMessage("You Lost");
+            Dialog.showMessage("You Lost try again");
+            removeAll();
+            placeAll();
+            score = 0;
+
 
         }
         
