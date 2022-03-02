@@ -155,22 +155,28 @@ public class Breakout extends GraphicsProgram {
 
                 //bounce the ball
                 ball.bounce();
+
                 //destroy brick
-                this.remove(obj);
-                score += 1;
-                scoreLabel.setLabel("Score:" + score);
+                Brick brick = (Brick)obj;
+
+                brick.getHit();
+                if(brick.hitPoint == 0) {
+                    this.remove(obj);
+                }
+
+
 
             }
-
+            score += 1;
+            scoreLabel.setLabel("Score:" + score);
 
 
         }
 
-
-
         //if by the nd of the method obj is still null, we hit nothing
 
     }
+
 
     private void placeAll(){
         numBricksInRow = (int) (getWidth()/ (Brick.WIDTH + 5.0));
@@ -221,6 +227,17 @@ public class Breakout extends GraphicsProgram {
         }
         
     }
+
+    private void handleWin(){
+
+        if(score == 150){
+
+            Dialog.showMessage("You Win!!");
+            reset();
+
+        }
+    }
+
     private void reset(){
 
         ball.setLocation(getWidth()/2, 350);
